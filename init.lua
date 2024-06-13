@@ -94,6 +94,8 @@ vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = false
 
 -- [[ Setting options ]]
+vim.opt.wrap = false
+
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
@@ -114,7 +116,7 @@ vim.opt.showmode = false
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
--- vim.opt.clipboard = 'unnamedplus'
+vim.opt.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -902,6 +904,12 @@ require('lazy').setup({
       vim.keymap.set('n', '<A-2>', function() harpoon:list():select(2) end)
       vim.keymap.set('n', '<A-3>', function() harpoon:list():select(3) end)
       vim.keymap.set('n', '<A-4>', function() harpoon:list():select(4) end)
+      vim.keymap.set('n', '<A-5>', function() harpoon:list():select(5) end)
+      vim.keymap.set('n', '<A-6>', function() harpoon:list():select(6) end)
+      vim.keymap.set('n', '<A-7>', function() harpoon:list():select(7) end)
+      vim.keymap.set('n', '<A-8>', function() harpoon:list():select(8) end)
+      vim.keymap.set('n', '<A-9>', function() harpoon:list():select(9) end)
+      vim.keymap.set('n', '<A-0>', function() harpoon:list():select(0) end)
     end,
   },
 }, {
