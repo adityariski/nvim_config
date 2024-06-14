@@ -108,7 +108,7 @@ vim.opt.number = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 -- vim.opt.mouse = 'a'
-vim.opt.mouse = ''
+vim.opt.mouse = 'a'
 
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
@@ -164,6 +164,7 @@ vim.opt.scrolloff = 100
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+vim.keymap.set({'n', 'i'}, '<C-c>', '<Esc>')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
@@ -898,7 +899,10 @@ require('lazy').setup({
     config = function()
       local harpoon = require 'harpoon'
       harpoon:setup()
-      vim.keymap.set('n', '<leader>a', function() harpoon:list():add() end)
+      vim.keymap.set('n', '<C-a>', function()
+        harpoon:list():remove()
+        harpoon:list():add()
+      end)
       vim.keymap.set('n', '<C-e>', function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
       vim.keymap.set('n', '<A-1>', function() harpoon:list():select(1) end)
       vim.keymap.set('n', '<A-2>', function() harpoon:list():select(2) end)
