@@ -94,6 +94,10 @@ vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = false
 
 -- [[ Setting options ]]
+vim.opt.expandtab = true
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.softtabstop = 2
 vim.opt.wrap = false
 
 -- See `:help vim.opt`
@@ -104,7 +108,7 @@ vim.opt.wrap = false
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 -- vim.opt.mouse = 'a'
@@ -570,9 +574,12 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        ["html-lsp"] = {},
+        ["htmx-lsp"] = {},
+        clangd = {},
         gopls = {},
         pyright = {},
+        tsserver = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -937,6 +944,3 @@ require('lazy').setup({
     },
   },
 })
-
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
