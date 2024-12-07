@@ -115,7 +115,7 @@ vim.opt.relativenumber = true
 vim.opt.mouse = 'a'
 
 -- Don't show the mode, since it's already in the status line
-vim.opt.showmode = true
+vim.opt.showmode = false
 
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -164,12 +164,13 @@ vim.opt.scrolloff = 100
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
+vim.keymap.set({ 'n', 'i' }, '<C-\\>', '<cmd>Rest run<CR>')
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 -- vim.keymap.set({'n', 'i'}, '<C-c>', '<Esc>')
 -- vim.keymap.set({'n', 'i'}, '<Esc>', '<cmd>nohlsearch<CR>')
-vim.keymap.set({'n', 'i'}, '<C-c>', '<Esc><cmd>nohlsearch<CR>')
+vim.keymap.set({ 'n', 'i' }, '<C-c>', '<Esc><cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
@@ -183,7 +184,7 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 --
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+-- vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -287,24 +288,23 @@ require('lazy').setup({
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     config = function() -- This is the function that runs, AFTER loading
-      require('which-key').setup(
-        {
-          { "<leader>c", group = "[C]ode" },
-          { "<leader>c_", hidden = true },
-          { "<leader>d", group = "[D]ocument" },
-          { "<leader>d_", hidden = true },
-          { "<leader>h", group = "Git [H]unk" },
-          { "<leader>h_", hidden = true },
-          { "<leader>r", group = "[R]ename" },
-          { "<leader>r_", hidden = true },
-          { "<leader>s", group = "[S]earch" },
-          { "<leader>s_", hidden = true },
-          { "<leader>t", group = "[T]oggle" },
-          { "<leader>t_", hidden = true },
-          { "<leader>w", group = "[W]orkspace" },
-          { "<leader>w_", hidden = true },
-          { "<leader>h", desc = "Git [H]unk", mode = "v" },
-        })
+      require('which-key').setup {
+        { '<leader>c', group = '[C]ode' },
+        { '<leader>c_', hidden = true },
+        { '<leader>d', group = '[D]ocument' },
+        { '<leader>d_', hidden = true },
+        { '<leader>h', group = 'Git [H]unk' },
+        { '<leader>h_', hidden = true },
+        { '<leader>r', group = '[R]ename' },
+        { '<leader>r_', hidden = true },
+        { '<leader>s', group = '[S]earch' },
+        { '<leader>s_', hidden = true },
+        { '<leader>t', group = '[T]oggle' },
+        { '<leader>t_', hidden = true },
+        { '<leader>w', group = '[W]orkspace' },
+        { '<leader>w_', hidden = true },
+        { '<leader>h', desc = 'Git [H]unk', mode = 'v' },
+      }
     end,
   },
 
@@ -577,8 +577,8 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        ["html-lsp"] = {},
-        ["htmx-lsp"] = {},
+        ['html-lsp'] = {},
+        ['htmx-lsp'] = {},
         clangd = {},
         gopls = {},
         pyright = {},
@@ -603,7 +603,7 @@ require('lazy').setup({
                 callSnippet = 'Replace',
               },
               -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
+              diagnostics = { disable = { 'missing-fields' } },
             },
           },
         },
@@ -816,16 +816,16 @@ require('lazy').setup({
       -- Better Around/Inside textobjects
       --
       -- Examples:
-      --  - va)  - [V]isually select [A]round [)]paren
+      --  - va  - [V]isually select [A]round []paren
       --  - yinq - [Y]ank [I]nside [N]ext [']quote
       --  - ci'  - [C]hange [I]nside [']quote
       require('mini.ai').setup { n_lines = 500 }
 
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
-      -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
+      -- - saiw - [S]urround [A]dd [I]nner [W]ord []Paren
       -- - sd'   - [S]urround [D]elete [']quotes
-      -- - sr)'  - [S]urround [R]eplace [)] [']
+      -- - sr'  - [S]urround [R]eplace [] [']
       require('mini.surround').setup()
 
       -- Simple and easy statusline.
@@ -833,7 +833,7 @@ require('lazy').setup({
       --  and try some other statusline plugin
       local statusline = require 'mini.statusline'
       -- set use_icons to true if you have a Nerd Font
-      -- statusline.setup { use_icons = vim.g.have_nerd_font }
+      statusline.setup { use_icons = vim.g.have_nerd_font,  }
 
       -- You can configure sections in the statusline by overriding their
       -- default behavior. For example, here we set the section for
@@ -842,6 +842,8 @@ require('lazy').setup({
       statusline.section_location = function()
         return '%2l:%-2v'
       end
+
+      vim.api.nvim_set_hl(0, 'MiniStatusLineModeNormal', { link = 'StatusLine'})
 
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
@@ -862,6 +864,7 @@ require('lazy').setup({
         additional_vim_regex_highlighting = { 'ruby' },
       },
       indent = { enable = true, disable = { 'ruby' } },
+      matchup = { enable = true },
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
@@ -914,17 +917,39 @@ require('lazy').setup({
         harpoon:list():remove()
         harpoon:list():add()
       end)
-      vim.keymap.set('n', '<C-e>', function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
-      vim.keymap.set('n', '<A-1>', function() harpoon:list():select(1) end)
-      vim.keymap.set('n', '<A-2>', function() harpoon:list():select(2) end)
-      vim.keymap.set('n', '<A-3>', function() harpoon:list():select(3) end)
-      vim.keymap.set('n', '<A-4>', function() harpoon:list():select(4) end)
-      vim.keymap.set('n', '<A-5>', function() harpoon:list():select(5) end)
-      vim.keymap.set('n', '<A-6>', function() harpoon:list():select(6) end)
-      vim.keymap.set('n', '<A-7>', function() harpoon:list():select(7) end)
-      vim.keymap.set('n', '<A-8>', function() harpoon:list():select(8) end)
-      vim.keymap.set('n', '<A-9>', function() harpoon:list():select(9) end)
-      vim.keymap.set('n', '<A-0>', function() harpoon:list():select(0) end)
+      vim.keymap.set('n', '<C-e>', function()
+        harpoon.ui:toggle_quick_menu(harpoon:list())
+      end)
+      vim.keymap.set('n', '<A-1>', function()
+        harpoon:list():select(1)
+      end)
+      vim.keymap.set('n', '<A-2>', function()
+        harpoon:list():select(2)
+      end)
+      vim.keymap.set('n', '<A-3>', function()
+        harpoon:list():select(3)
+      end)
+      vim.keymap.set('n', '<A-4>', function()
+        harpoon:list():select(4)
+      end)
+      vim.keymap.set('n', '<A-5>', function()
+        harpoon:list():select(5)
+      end)
+      vim.keymap.set('n', '<A-6>', function()
+        harpoon:list():select(6)
+      end)
+      vim.keymap.set('n', '<A-7>', function()
+        harpoon:list():select(7)
+      end)
+      vim.keymap.set('n', '<A-8>', function()
+        harpoon:list():select(8)
+      end)
+      vim.keymap.set('n', '<A-9>', function()
+        harpoon:list():select(9)
+      end)
+      vim.keymap.set('n', '<A-0>', function()
+        harpoon:list():select(0)
+      end)
     end,
   },
 }, {
