@@ -163,12 +163,13 @@ vim.opt.cursorline = true
 -- vim.opt.scrolloff = 100
 vim.opt.scrolloff = 100
 
+-- Set highlight on search, but clear on pressing <Esc> in normal mode
+vim.opt.hlsearch = true
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'i' }, '<C-\\>', '<cmd>Rest run<CR>')
 
--- Set highlight on search, but clear on pressing <Esc> in normal mode
-vim.opt.hlsearch = true
 -- vim.keymap.set({'n', 'i'}, '<C-c>', '<Esc>')
 -- vim.keymap.set({'n', 'i'}, '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set({ 'n', 'i' }, '<C-c>', '<Esc><cmd>nohlsearch<CR>')
