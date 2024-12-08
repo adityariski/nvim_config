@@ -812,6 +812,7 @@ require('lazy').setup({
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr'  - [S]urround [R]eplace [] [']
       require('mini.surround').setup()
+      -- require('mini.notify').setup()
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
@@ -888,7 +889,7 @@ require('lazy').setup({
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
   -- { import = 'custom.plugins' },
-  { "rest-nvim/rest.nvim" },
+  { 'rest-nvim/rest.nvim' },
   {
     'ThePrimeagen/harpoon',
     branch = 'harpoon2',
