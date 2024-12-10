@@ -16,7 +16,7 @@
 ========        /::::::::::|  |::::::::::\  \ no mouse \     ========
 ========       /:::========|  |==hjkl==:::\  \ required \    ========
 ========      '""""""""""""'  '""""""""""""'  '""""""""""'   ========
-=======                                                     ========
+=======                                                      ========
 =====================================================================
 =====================================================================
 
@@ -891,6 +891,13 @@ require('lazy').setup({
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
   -- { import = 'custom.plugins' },
   { 'rest-nvim/rest.nvim' },
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    config = function()
+      require("oil").setup()
+    end
+  },
   {
     'ThePrimeagen/harpoon',
     branch = 'harpoon2',
