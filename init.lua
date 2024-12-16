@@ -892,6 +892,19 @@ require('lazy').setup({
   -- { import = 'custom.plugins' },
   { 'rest-nvim/rest.nvim' },
   {
+    "vhyrro/luarocks.nvim",
+    config = function() return end,
+    opts = {
+      rocks = {  "lua-curl", "nvim-nio", "mimetypes", "xml2lua" }, -- Specify LuaRocks packages to install
+    },
+  },
+  {
+    "j-hui/fidget.nvim",
+    opts = {
+      -- options
+    },
+  },
+  {
     'stevearc/oil.nvim',
     opts = {},
     config = function()
