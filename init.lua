@@ -594,7 +594,7 @@ require('lazy').setup({
         use_nvim_cmp_as_default = true,
         -- nerd_font_variant = 'mono'
       },
-      signature = { enabled = true }
+      signature = { enabled = true },
     },
   },
 
@@ -625,8 +625,8 @@ require('lazy').setup({
       --  and try some other statusline plugin
       local statusline = require 'mini.statusline'
       -- set use_icons to true if you have a Nerd Font
-      statusline.setup { use_icons = vim.g.have_nerd_font, }
-      vim.api.nvim_set_hl(0, 'MiniStatusLineModeNormal', { link = 'StatusLine'})
+      statusline.setup { use_icons = vim.g.have_nerd_font }
+      vim.api.nvim_set_hl(0, 'MiniStatusLineModeNormal', { link = 'StatusLine' })
 
       -- You can configure sections in the statusline by overriding their
       -- default behavior. For example, here we set the section for
@@ -698,22 +698,21 @@ require('lazy').setup({
   -- { 'miikanissi/modus-themes.nvim', priority = 1000, config = function() vim.cmd.colorscheme 'modus_vivendi' end },
   { 'rest-nvim/rest.nvim' },
   {
-    "vhyrro/luarocks.nvim",
-    config = function()
-    end,
+    'vhyrro/luarocks.nvim',
+    config = function() end,
     opts = {
-      rocks = {  "lua-curl", "nvim-nio", "mimetypes", "xml2lua" }, -- Specify LuaRocks packages to install
+      rocks = { 'lua-curl', 'nvim-nio', 'mimetypes', 'xml2lua' }, -- Specify LuaRocks packages to install
     },
   },
   {
     'stevearc/oil.nvim',
     dependencies = {
-      "j-hui/fidget.nvim",
+      'j-hui/fidget.nvim',
     },
     opts = {},
     config = function()
-      require("oil").setup()
-    end
+      require('oil').setup()
+    end,
   },
   {
     'ThePrimeagen/harpoon',
@@ -762,23 +761,23 @@ require('lazy').setup({
     end,
   },
 }, {
-    ui = {
-      -- If you are using a Nerd Font: set icons to an empty table which will use the
-      -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
-      icons = vim.g.have_nerd_font and {} or {
-        cmd = '⌘',
-        config = '🛠',
-        event = '📅',
-        ft = '📂',
-        init = '⚙',
-        keys = '🗝',
-        plugin = '🔌',
-        runtime = '💻',
-        require = '🌙',
-        source = '📄',
-        start = '🚀',
-        task = '📌',
-        lazy = '💤 ',
-      },
+  ui = {
+    -- If you are using a Nerd Font: set icons to an empty table which will use the
+    -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
+    icons = vim.g.have_nerd_font and {} or {
+      cmd = '⌘',
+      config = '🛠',
+      event = '📅',
+      ft = '📂',
+      init = '⚙',
+      keys = '🗝',
+      plugin = '🔌',
+      runtime = '💻',
+      require = '🌙',
+      source = '📄',
+      start = '🚀',
+      task = '📌',
+      lazy = '💤 ',
     },
-  })
+  },
+})
