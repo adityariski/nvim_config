@@ -708,7 +708,7 @@ require('lazy').setup({
   {
     'stevearc/oil.nvim',
     dependencies = {
-    "j-hui/fidget.nvim",
+      "j-hui/fidget.nvim",
     },
     opts = {},
     config = function()
