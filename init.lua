@@ -696,7 +696,12 @@ require('lazy').setup({
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
   -- { import = 'custom.plugins' },
   -- { 'miikanissi/modus-themes.nvim', priority = 1000, config = function() vim.cmd.colorscheme 'modus_vivendi' end },
-  { 'rest-nvim/rest.nvim' },
+  {
+    'rest-nvim/rest.nvim',
+    dependencies = {
+      'j-hui/fidget.nvim',
+    },
+  },
   {
     'vhyrro/luarocks.nvim',
     config = function() end,
