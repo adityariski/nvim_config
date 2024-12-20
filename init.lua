@@ -702,7 +702,12 @@ require('lazy').setup({
       vim.cmd.colorscheme 'pywal16'
     end,
   },
-  { 'rest-nvim/rest.nvim' },
+  {
+    'rest-nvim/rest.nvim',
+    dependencies = {
+      'j-hui/fidget.nvim',
+    },
+  },
   {
     'vhyrro/luarocks.nvim',
     config = function() end,
