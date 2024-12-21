@@ -1,4 +1,3 @@
---  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 -- vim.cmd.colorscheme 'ir_black'
 vim.cmd.colorscheme 'grb256'
 vim.g.mapleader = ' '

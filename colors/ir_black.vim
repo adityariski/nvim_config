@@ -34,7 +34,6 @@ hi WarningMsg       guifg=white       guibg=#FF6C60     gui=BOLD      ctermfg=wh
 hi SpellCap         guifg=NONE        guibg=#555753     gui=NONE      ctermfg=NONE        ctermbg=darkgray    cterm=NONE
 
 hi ModeMsg          guifg=white       guibg=black       gui=BOLD      ctermfg=white       ctermbg=black       cterm=BOLD
-hi link MiniStatusLineModeNormal StatusLine
 
 if version >= 700
   hi CursorLine     guifg=NONE        guibg=#121212     gui=NONE      ctermfg=NONE        ctermbg=NONE        cterm=BOLD
@@ -82,19 +81,3 @@ hi link Tag             Special
 hi link SpecialChar     Special
 hi link SpecialComment  Special
 hi link Debug           Special
-
-" Special for XML
-hi link xmlTag          Keyword
-hi link xmlTagName      Conditional
-hi link xmlEndTag       Identifier
-
-" Special for HTML
-hi link htmlTag         Keyword
-hi link htmlTagName     Conditional
-hi link htmlEndTag      Identifier
-
-" Special for Javascript
-hi link javaScriptNumber      Number
-
-" Special for CSharp
-hi  link csXmlTag             Keyword
