@@ -7,7 +7,7 @@ hi Comment ctermfg=lightgrey
 hi StatusLine ctermbg=darkgrey ctermfg=white
 hi StatusLineNC ctermbg=black ctermfg=lightgrey
 hi VertSplit ctermbg=black ctermfg=lightgrey
-hi LineNr ctermfg=darkgray
+hi LineNr guifg=#7d7d7d
 hi CursorLine       guifg=NONE        guibg=#202020     gui=NONE      ctermfg=NONE       ctermbg=234    cterm=NONE
 hi CursorLineNR     guifg=#FFFF98     guibg=#202020
 hi Function         guifg=#FFD2A7     guibg=NONE        gui=NONE      ctermfg=yellow     ctermbg=NONE   cterm=NONE
@@ -30,6 +30,8 @@ hi link MiniStatusLineModeNormal StatusLine
 hi link MiniStatusLineModeInsert StatusLine
 hi link MiniStatusLineModeVisual StatusLine
 hi link MiniStatusLineModeCommand StatusLine
+hi link MiniStatusLineModeReplace StatusLine
+hi link MiniStatuslineModeOther StatusLine
 
 " Special for XML
 " hi link xmlTag          Keyword
