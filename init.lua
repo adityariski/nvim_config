@@ -586,15 +586,15 @@ require('lazy').setup({
   { -- Autocompletion
     'saghen/blink.cmp',
     dependencies = 'rafamadriz/friendly-snippets',
-    version = 'v0.*',
+    version = '*',
     opts = {
       keymap = { preset = 'default' },
-
+      sources = { cmdline = {} }, -- disable command mode completions
+      signature = { enabled = true },
       appearance = {
         use_nvim_cmp_as_default = true,
-        -- nerd_font_variant = 'mono'
+        nerd_font_variant = 'mono'
       },
-      signature = { enabled = true },
     },
   },
 
