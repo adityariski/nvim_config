@@ -1,5 +1,5 @@
 -- vim.cmd.colorscheme 'ir_black'
-vim.cmd.colorscheme 'grb256'
+vim.cmd.colorscheme 'main'
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
