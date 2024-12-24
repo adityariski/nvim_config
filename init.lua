@@ -241,23 +241,23 @@ require('lazy').setup({
 
       local servers = {
         -- rust_analyzer = {},
-        ['html-lsp'] = {},
-        ['htmx-lsp'] = {},
-        clangd = {},
-        gopls = {},
-        pyright = {},
-        ts_ls = {},
-        lua_ls = {
-          settings = {
-            Lua = {
-              completion = {
-                callSnippet = 'Replace',
-              },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              diagnostics = { disable = { 'missing-fields' } },
-            },
-          },
-        },
+        -- ['html-lsp'] = {},
+        -- ['htmx-lsp'] = {},
+        -- clangd = {},
+        -- gopls = {},
+        -- pyright = {},
+        -- ts_ls = {},
+        -- lua_ls = {
+        --   settings = {
+        --     Lua = {
+        --       completion = {
+        --         callSnippet = 'Replace',
+        --       },
+        --       -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+        --       diagnostics = { disable = { 'missing-fields' } },
+        --     },
+        --   },
+        -- },
       }
 
       require('mason').setup()
