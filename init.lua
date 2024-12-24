@@ -241,13 +241,10 @@ require('lazy').setup({
       })
 
       local servers = {
-        -- rust_analyzer = {},
-        ['html-lsp'] = {},
         -- ['htmx-lsp'] = {},
-        -- clangd = {},
-        -- gopls = {},
+        ['html-lsp'] = {},
         pyright = {},
-        -- ts_ls = {},
+        intelephense = {},
         lua_ls = {
           settings = {
             Lua = {
