@@ -32,9 +32,11 @@ vim.opt.scrolloff = 100
 vim.opt.hlsearch = true
 
 -- [[ Basic Keymaps ]]
-vim.keymap.set({ 'v', 'n' }, '<leader>f', function() vim.lsp.buf.format() end)
 vim.keymap.set({ 'n', 'i' }, '<C-\\>', '<cmd>Rest run<CR>')
 vim.keymap.set({ 'n', 'i' }, '<C-c>', '<Esc><cmd>nohlsearch<CR>')
+
+-- Auto-Formating
+vim.keymap.set({ 'v', 'n' }, '<leader>f', function() vim.lsp.buf.format() end, { desc = 'Format' })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
@@ -42,6 +44,7 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagn
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
+-- Window navigation
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
@@ -256,13 +259,13 @@ require('lazy').setup({
           },
         },
       }
+
       require('mason').setup()
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
