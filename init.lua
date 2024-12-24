@@ -32,11 +32,11 @@ vim.opt.scrolloff = 100
 vim.opt.hlsearch = true
 
 -- [[ Basic Keymaps ]]
-vim.keymap.set({ 'n', 'i' }, '<C-\\>', '<cmd>Rest run<CR>')
+-- vim.keymap.set({ 'n', 'i' }, '<C-\\>', '<cmd>Rest run<CR>')
 vim.keymap.set({ 'n', 'i' }, '<C-c>', '<Esc><cmd>nohlsearch<CR>')
 
 -- Auto-Formating
-vim.keymap.set({ 'v', 'n' }, '<leader>f', function() vim.lsp.buf.format() end, { desc = 'Format' })
+-- vim.keymap.set({ 'v', 'n' }, '<leader>f', function() vim.lsp.buf.format() end, { desc = 'Format' })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
@@ -72,7 +72,8 @@ require('lazy').setup({
   'tpope/vim-sleuth',
 
   { -- "gc" to comment visual regions/lines
-    'numToStr/Comment.nvim', opts = {}
+    'numToStr/Comment.nvim',
+    opts = {},
   },
 
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
@@ -88,7 +89,7 @@ require('lazy').setup({
     },
   },
 
-  {                     -- Useful plugin to show you pending keybinds.
+  { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     config = function() -- This is the function that runs, AFTER loading
@@ -96,21 +97,21 @@ require('lazy').setup({
         icons = {
           mappings = false,
         },
-        { '<leader>c',  group = '[C]ode' },
+        { '<leader>c', group = '[C]ode' },
         { '<leader>c_', hidden = true },
-        { '<leader>d',  group = '[D]ocument' },
+        { '<leader>d', group = '[D]ocument' },
         { '<leader>d_', hidden = true },
-        { '<leader>h',  group = 'Git [H]unk' },
+        { '<leader>h', group = 'Git [H]unk' },
         { '<leader>h_', hidden = true },
-        { '<leader>r',  group = '[R]ename' },
+        { '<leader>r', group = '[R]ename' },
         { '<leader>r_', hidden = true },
-        { '<leader>s',  group = '[S]earch' },
+        { '<leader>s', group = '[S]earch' },
         { '<leader>s_', hidden = true },
-        { '<leader>t',  group = '[T]oggle' },
+        { '<leader>t', group = '[T]oggle' },
         { '<leader>t_', hidden = true },
-        { '<leader>w',  group = '[W]orkspace' },
+        { '<leader>w', group = '[W]orkspace' },
         { '<leader>w_', hidden = true },
-        { '<leader>h',  desc = 'Git [H]unk',  mode = 'v' },
+        { '<leader>h', desc = 'Git [H]unk', mode = 'v' },
       }
     end,
   },
@@ -131,7 +132,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
       {
         'nvim-tree/nvim-web-devicons',
-        enabled = vim.g.have_nerd_font
+        enabled = vim.g.have_nerd_font,
       },
     },
     config = function()
@@ -183,7 +184,7 @@ require('lazy').setup({
 
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim',       opts = {} },
+      { 'j-hui/fidget.nvim', opts = {} },
 
       -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
       -- used for completion, annotations and signatures of Neovim apis
@@ -281,7 +282,48 @@ require('lazy').setup({
       }
     end,
   },
-
+  { -- Autoformat
+    'stevearc/conform.nvim',
+    event = { 'BufWritePre' },
+    cmd = { 'ConformInfo' },
+    keys = {
+      {
+        '<leader>f',
+        function()
+          require('conform').format { async = true, lsp_format = 'fallback' }
+        end,
+        mode = '',
+        desc = '[F]ormat buffer',
+      },
+    },
+    opts = {
+      notify_on_error = false,
+      format_on_save = function(bufnr)
+        -- Disable "format_on_save lsp_fallback" for languages that don't
+        -- have a well standardized coding style. You can add additional
+        -- languages here or re-enable it for the disabled ones.
+        local disable_filetypes = { c = true, cpp = true }
+        local lsp_format_opt
+        if disable_filetypes[vim.bo[bufnr].filetype] then
+          lsp_format_opt = 'never'
+        else
+          lsp_format_opt = 'fallback'
+        end
+        return {
+          timeout_ms = 500,
+          lsp_format = lsp_format_opt,
+        }
+      end,
+      formatters_by_ft = {
+        lua = { 'stylua' },
+        -- Conform can also run multiple formatters sequentially
+        -- python = { "isort", "black" },
+        --
+        -- You can use 'stop_after_first' to run the first available formatter from the list
+        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+      },
+    },
+  },
   { -- Autocompletion
     'saghen/blink.cmp',
     dependencies = 'rafamadriz/friendly-snippets',
@@ -301,7 +343,7 @@ require('lazy').setup({
     'folke/todo-comments.nvim',
     event = 'VimEnter',
     dependencies = { 'nvim-lua/plenary.nvim' },
-    opts = { signs = false }
+    opts = { signs = false },
   },
 
   { -- Collection of various small independent plugins/modules
