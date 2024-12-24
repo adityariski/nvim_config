@@ -240,7 +240,7 @@ require('lazy').setup({
       })
 
       local servers = {
-        rust_analyzer = {},
+        -- rust_analyzer = {},
         ['html-lsp'] = {},
         ['htmx-lsp'] = {},
         clangd = {},
