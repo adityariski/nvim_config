@@ -35,7 +35,7 @@ vim.opt.hlsearch = true
 vim.keymap.set({ 'n', 'i' }, '<C-\\>', '<cmd>Rest run<CR>')
 vim.keymap.set({ 'n', 'i' }, '<C-c>', '<Esc><cmd>nohlsearch<CR>')
 
--- Autoformating
+-- Autoformat
 -- vim.keymap.set({ 'v', 'n' }, '<leader>f', function() vim.lsp.buf.format() end, { desc = 'Format' })
 
 -- Diagnostic keymaps
@@ -72,7 +72,8 @@ require('lazy').setup({
   'tpope/vim-sleuth',
 
   { -- "gc" to comment visual regions/lines
-    'numToStr/Comment.nvim', opts = {}
+    'numToStr/Comment.nvim',
+    opts = {},
   },
 
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
@@ -88,7 +89,7 @@ require('lazy').setup({
     },
   },
 
-  {                     -- Useful plugin to show you pending keybinds.
+  { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     config = function() -- This is the function that runs, AFTER loading
@@ -96,21 +97,21 @@ require('lazy').setup({
         icons = {
           mappings = false,
         },
-        { '<leader>c',  group = '[C]ode' },
+        { '<leader>c', group = '[C]ode' },
         { '<leader>c_', hidden = true },
-        { '<leader>d',  group = '[D]ocument' },
+        { '<leader>d', group = '[D]ocument' },
         { '<leader>d_', hidden = true },
-        { '<leader>h',  group = 'Git [H]unk' },
+        { '<leader>h', group = 'Git [H]unk' },
         { '<leader>h_', hidden = true },
-        { '<leader>r',  group = '[R]ename' },
+        { '<leader>r', group = '[R]ename' },
         { '<leader>r_', hidden = true },
-        { '<leader>s',  group = '[S]earch' },
+        { '<leader>s', group = '[S]earch' },
         { '<leader>s_', hidden = true },
-        { '<leader>t',  group = '[T]oggle' },
+        { '<leader>t', group = '[T]oggle' },
         { '<leader>t_', hidden = true },
-        { '<leader>w',  group = '[W]orkspace' },
+        { '<leader>w', group = '[W]orkspace' },
         { '<leader>w_', hidden = true },
-        { '<leader>h',  desc = 'Git [H]unk',  mode = 'v' },
+        { '<leader>h', desc = 'Git [H]unk', mode = 'v' },
       }
     end,
   },
@@ -131,7 +132,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
       {
         'nvim-tree/nvim-web-devicons',
-        enabled = vim.g.have_nerd_font
+        enabled = vim.g.have_nerd_font,
       },
     },
     config = function()
@@ -183,11 +184,11 @@ require('lazy').setup({
 
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim',       opts = {} },
+      { 'j-hui/fidget.nvim', opts = {} },
 
       -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
       -- used for completion, annotations and signatures of Neovim apis
-      { 'folke/neodev.nvim',       opts = {} },
+      { 'folke/neodev.nvim', opts = {} },
     },
     config = function()
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -344,7 +345,7 @@ require('lazy').setup({
     'folke/todo-comments.nvim',
     event = 'VimEnter',
     dependencies = { 'nvim-lua/plenary.nvim' },
-    opts = { signs = false }
+    opts = { signs = false },
   },
 
   { -- Collection of various small independent plugins/modules
