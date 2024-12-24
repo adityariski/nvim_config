@@ -241,11 +241,11 @@ require('lazy').setup({
 
       local servers = {
         -- rust_analyzer = {},
-        -- ['html-lsp'] = {},
+        ['html-lsp'] = {},
         -- ['htmx-lsp'] = {},
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {},
         -- ts_ls = {},
         -- lua_ls = {
         --   settings = {
@@ -352,12 +352,12 @@ require('lazy').setup({
   --   end,
   -- },
 
-  {
-    'rest-nvim/rest.nvim',
-    dependencies = {
-      'j-hui/fidget.nvim',
-    },
-  },
+  -- {
+  --   'rest-nvim/rest.nvim',
+  --   dependencies = {
+  --     'j-hui/fidget.nvim',
+  --   },
+  -- },
 
   {
     'vhyrro/luarocks.nvim',
