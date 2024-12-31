@@ -188,7 +188,7 @@ require('lazy').setup({
 
       -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
       -- used for completion, annotations and signatures of Neovim apis
-      -- { 'folke/neodev.nvim',       opts = {} },
+      { 'folke/neodev.nvim', opts = {} },
     },
     config = function()
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -245,24 +245,40 @@ require('lazy').setup({
         ['html-lsp'] = {},
         pyright = {},
         intelephense = {},
-        lua_ls = {
-          settings = {
-            Lua = {
-              completion = {
-                callSnippet = 'Replace',
-              },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              diagnostics = { disable = { 'missing-fields' } },
+        -- lua_ls = {
+        --   settings = {
+        --     Lua = {
+        --       completion = {
+        --         callSnippet = 'Replace',
+        --       },
+        --       -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+        --       diagnostics = { disable = { 'missing-fields' } },
+        --     },
+        --   },
+        -- },
+      }
+
+      require('lspconfig').lua_ls.capabilities = require('blink.cmp').get_lsp_capabilities(require('lspconfig').lua_ls)
+      require('lspconfig').lua_ls.setup {
+        settings = {
+          Lua = {
+            completion = {
+              callSnippet = 'Replace',
             },
+            -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+            diagnostics = { disable = { 'missing-fields' } },
+          },
+          format = {
+            enable = true,
           },
         },
       }
 
       require('mason').setup()
       local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format Lua code
-      })
+      -- vim.list_extend(ensure_installed, {
+      --   'stylua', -- Used to format Lua code
+      -- })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
       require('mason-lspconfig').setup {
         handlers = {
@@ -380,16 +396,6 @@ require('lazy').setup({
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
   -- { import = 'custom.plugins' },
-
-  -- { 'miikanissi/modus-themes.nvim', priority = 1000, config = function() vim.cmd.colorscheme 'modus_vivendi' end },
-  -- {
-  --   'uZer/pywal16.nvim',
-  --   config = function()
-  --     -- vim.cmd.colorscheme 'pywal16'
-  --     local pywal16 = require('pywal16')
-  --     pywal16.setup()
-  --   end,
-  -- },
 
   -- {
   --   'rest-nvim/rest.nvim',
