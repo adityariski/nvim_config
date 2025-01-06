@@ -32,11 +32,11 @@ vim.opt.scrolloff = 100
 vim.opt.hlsearch = true
 
 -- [[ Basic Keymaps ]]
-vim.keymap.set({ 'n', 'i' }, '<C-\\>', '<cmd>Rest run<CR>')
-vim.keymap.set({ 'n', 'i' }, '<C-c>', '<Esc><cmd>nohlsearch<CR>')
-
 -- Autoformat
 -- vim.keymap.set({ 'v', 'n' }, '<leader>f', function() vim.lsp.buf.format() end, { desc = 'Format' })
+
+vim.keymap.set({ 'n', 'i' }, '<C-\\>', '<cmd>Rest run<CR>')
+vim.keymap.set({ 'n', 'i' }, '<C-c>', '<Esc><cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
@@ -67,7 +67,7 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 -- NOTE: Here is where you install your plugins.
-require('lazy').setup({
+require('lazy').setup {
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
@@ -197,6 +197,7 @@ require('lazy').setup({
           local map = function(keys, func, desc)
             vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
+
           map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
           map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
           map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
@@ -232,6 +233,7 @@ require('lazy').setup({
               end,
             })
           end
+
           if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
             map('<leader>th', function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
@@ -468,22 +470,4 @@ require('lazy').setup({
       end)
     end,
   },
-}, {
-  ui = {
-    icons = vim.g.have_nerd_font and {} or {
-      cmd = '⌘',
-      config = '🛠',
-      event = '📅',
-      ft = '📂',
-      init = '⚙',
-      keys = '🗝',
-      plugin = '🔌',
-      runtime = '💻',
-      require = '🌙',
-      source = '📄',
-      start = '🚀',
-      task = '📌',
-      lazy = '💤 ',
-    },
-  },
-})
+}
