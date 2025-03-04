@@ -309,11 +309,12 @@ require('lazy').setup {
 
       local servers = {
         -- rust_analyzer = {},
+        -- clangd = {},
         ['html-lsp'] = {},
         ['htmx-lsp'] = {},
-        clangd = {},
-        gopls = {},
+        intelephense = {},
         pyright = {},
+        gopls = {},
         ts_ls = {},
         lua_ls = {
           settings = {
