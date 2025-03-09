@@ -538,4 +538,22 @@ require('lazy').setup {
       vim.keymap.set('n', '<A-0>', function() harpoon:list():select(0) end)
     end,
   },
+
+  {
+    'tpope/vim-dadbod',
+    dependencies = {
+      'kristijanhusak/vim-dadbod-completion',
+      'kristijanhusak/vim-dadbod-ui'
+    },
+    config = function()
+      require('cmp').setup.filetype(
+        { 'sql' },
+        {
+          sources = {
+            { name = 'vim-dadbod-completion' },
+            { name = 'buffer' }
+          },
+        })
+    end
+  },
 }
