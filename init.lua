@@ -220,7 +220,6 @@ require('lazy').setup {
     end,
   },
 
-
   { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     dependencies = {
