@@ -95,13 +95,8 @@ vim.opt.rtp:prepend(lazypath)
 
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup {
-  -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
-
-  -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {}, },
-
-  -- Adds git related signs to the gutter, as well as utilities for managing changes
+  { 'numToStr/Comment.nvim',               opts = {}, },
   {
     'lewis6991/gitsigns.nvim',
     opts = {
@@ -115,7 +110,6 @@ require('lazy').setup {
     },
   },
 
-  -- Useful plugin to show you pending keybinds.
   {
     'folke/which-key.nvim',
     event = 'VimEnter',
@@ -168,8 +162,7 @@ require('lazy').setup {
     },
   },
 
-  -- Fuzzy Finder (files, lsp, etc)
-  {
+  { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
     branch = '*',
@@ -227,32 +220,14 @@ require('lazy').setup {
     end,
   },
 
+
   { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     dependencies = {
-      -- Automatically install LSPs and related tools to stdpath for Neovim
       { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
+      { 'j-hui/fidget.nvim',       opts = {} },
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
-
-      -- Useful status updates for LSP.
-      -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim',       opts = {} },
-
-      -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
-      -- used for completion, annotations and signatures of Neovim apis
-      {
-        'folke/lazydev.nvim',
-        ft = 'lua',
-        opts = {
-          library = {
-            -- Load luvit types when the `vim.uv` word is found
-            { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
-          },
-        },
-      },
-
-      -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
@@ -274,9 +249,16 @@ require('lazy').setup {
           map('K', vim.lsp.buf.hover, 'Hover Documentation')
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
-          local client = vim.lsp.get_client_by_id(event.data.client_id)
+          local function client_supports_method(client, method, bufnr)
+            if vim.fn.has 'nvim-0.11' == 1 then
+              return client:supports_method(method, bufnr)
+            else
+              return client.supports_method(method, { bufnr = bufnr })
+            end
+          end
 
-          if client and client.server_capabilities.documentHighlightProvider then
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
+          if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf) then
             local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
             vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
               buffer = event.buf,
@@ -299,13 +281,33 @@ require('lazy').setup {
             })
           end
 
-          if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+          if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
             map('<leader>th', function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, '[T]oggle Inlay [H]ints')
           end
         end,
       })
+
+      vim.diagnostic.config {
+        severity_sort = true,
+        float = { border = 'rounded', source = 'if_many' },
+        underline = { severity = vim.diagnostic.severity.ERROR },
+        signs = {},
+        virtual_text = {
+          source = 'if_many',
+          spacing = 2,
+          format = function(diagnostic)
+            local diagnostic_message = {
+              [vim.diagnostic.severity.ERROR] = diagnostic.message,
+              [vim.diagnostic.severity.WARN] = diagnostic.message,
+              [vim.diagnostic.severity.INFO] = diagnostic.message,
+              [vim.diagnostic.severity.HINT] = diagnostic.message,
+            }
+            return diagnostic_message[diagnostic.severity]
+          end,
+        },
+      }
 
       local servers = {
         -- rust_analyzer = {},
@@ -348,9 +350,7 @@ require('lazy').setup {
     end,
   },
 
-  -- Autocompletion
-  -- or use blink.cmp plugin
-  {
+  { -- Autocompletion or use blink.cmp plugin
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
     dependencies = {
@@ -370,11 +370,9 @@ require('lazy').setup {
       'hrsh7th/cmp-nvim-lsp-signature-help',
     },
     config = function()
-      -- See `:help cmp`
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
       luasnip.config.setup {}
-
       cmp.setup {
         snippet = {
           expand = function(args)
@@ -382,29 +380,13 @@ require('lazy').setup {
           end,
         },
         completion = { completeopt = 'menu,menuone,noinsert' },
-
         mapping = cmp.mapping.preset.insert {
           ['<C-n>'] = cmp.mapping.select_next_item(),
           ['<C-p>'] = cmp.mapping.select_prev_item(),
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
           ['<C-y>'] = cmp.mapping.confirm { select = true },
-
-          -- If you prefer more traditional completion keymaps,
-          -- you can uncomment the following lines
-          --['<CR>'] = cmp.mapping.confirm { select = true },
-          --['<Tab>'] = cmp.mapping.select_next_item(),
-          --['<S-Tab>'] = cmp.mapping.select_prev_item(),
           ['<C-Space>'] = cmp.mapping.complete {},
-
-          -- Think of <c-l> as moving to the right of your snippet expansion.
-          --  So if you have a snippet that's like:
-          --  function $name($args)
-          --    $body
-          --  end
-          --
-          -- <c-l> will move you to the right of each of the expansion locations.
-          -- <c-h> is similar, except moving you backwards.
           ['<C-l>'] = cmp.mapping(function()
             if luasnip.expand_or_locally_jumpable() then
               luasnip.expand_or_jump()
@@ -419,31 +401,53 @@ require('lazy').setup {
         sources = {
           {
             name = 'lazydev',
-            -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
             group_index = 0,
           },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
           { name = 'nvim_lsp_signature_help' },
+
+          { name = 'vim-dadbod-completion' },
+          { name = 'buffer' },
         },
       }
     end,
   },
 
-  -- Autoformat
-  { 'stevearc/conform.nvim', opts = {}, },
+  { -- contain neodev
+    'folke/lazydev.nvim',
+    ft = 'lua',
+    opts = {
+      library = {
+        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+      },
+    },
+  },
 
-  -- Highlight todo, notes, etc in comments
-  {
+  { -- Autoformat
+    'stevearc/conform.nvim',
+    opts = {},
+    keys = {
+      {
+        '<leader>f',
+        function()
+          require('conform').format { async = true, lsp_format = 'fallback' }
+        end,
+        mode = '',
+        desc = '[F]ormat buffer',
+      },
+    },
+  },
+
+  { -- Highlight todo, notes, etc in comments
     'folke/todo-comments.nvim',
     event = 'VimEnter',
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = { signs = false },
   },
 
-  -- Collection of various small independent plugins/modules
-  {
+  { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
     config = function()
       require('mini.ai').setup { n_lines = 500 }
@@ -457,8 +461,7 @@ require('lazy').setup {
     end,
   },
 
-  -- Highlight, edit, and navigate code
-  {
+  { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
@@ -539,21 +542,7 @@ require('lazy').setup {
     end,
   },
 
-  {
-    'tpope/vim-dadbod',
-    dependencies = {
-      'kristijanhusak/vim-dadbod-completion',
-      'kristijanhusak/vim-dadbod-ui'
-    },
-    config = function()
-      require('cmp').setup.filetype(
-        { 'sql' },
-        {
-          sources = {
-            { name = 'vim-dadbod-completion' },
-            { name = 'buffer' }
-          },
-        })
-    end
-  },
+  { 'tpope/vim-dadbod' },
+  { 'kristijanhusak/vim-dadbod-completion' },
+  { 'kristijanhusak/vim-dadbod-ui' },
 }
