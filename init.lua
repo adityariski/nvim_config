@@ -312,29 +312,29 @@ require('lazy').setup {
         -- rust_analyzer = {},
         -- clangd = {},
         ['html-lsp'] = {},
-        ['htmx-lsp'] = {},
+        -- ['htmx-lsp'] = {},
         intelephense = {},
         pyright = {},
-        gopls = {},
+        -- gopls = {},
         ts_ls = {},
-        lua_ls = {
-          settings = {
-            Lua = {
-              completion = {
-                callSnippet = 'Replace',
-              },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              diagnostics = { disable = { 'missing-fields' } },
-            },
-          },
-        },
+        -- lua_ls = {
+        --   settings = {
+        --     Lua = {
+        --       completion = {
+        --         callSnippet = 'Replace',
+        --       },
+        --       -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+        --       diagnostics = { disable = { 'missing-fields' } },
+        --     },
+        --   },
+        -- },
       }
 
       require('mason').setup()
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
       local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, { 'stylua' })
+      -- vim.list_extend(ensure_installed, { 'stylua' })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
       require('mason-lspconfig').setup {
         handlers = {
@@ -491,21 +491,21 @@ require('lazy').setup {
     end,
   },
 
-  {
-    'rest-nvim/rest.nvim',
-    dependencies = {
-      'j-hui/fidget.nvim',
-    },
-  },
-
-  {
-    'vhyrro/luarocks.nvim',
-    config = function() end,
-    opts = {
-      -- Specify LuaRocks packages to install
-      rocks = { 'lua-curl', 'nvim-nio', 'mimetypes', 'xml2lua' },
-    },
-  },
+  -- {
+  --   'rest-nvim/rest.nvim',
+  --   dependencies = {
+  --     'j-hui/fidget.nvim',
+  --   },
+  -- },
+  --
+  -- {
+  --   'vhyrro/luarocks.nvim',
+  --   config = function() end,
+  --   opts = {
+  --     -- Specify LuaRocks packages to install
+  --     rocks = { 'lua-curl', 'nvim-nio', 'mimetypes', 'xml2lua' },
+  --   },
+  -- },
 
   {
     'stevearc/oil.nvim',
