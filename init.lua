@@ -314,7 +314,33 @@ require('lazy').setup {
         ['html-lsp'] = {},
         ['htmx-lsp'] = {},
         intelephense = {},
-        pyright = {},
+        -- pyright = {},
+        pylsp = {
+          settings = {
+            pylsp = {
+              plugins = {
+                -- formatter options
+                yapf = { enabled = false },
+                black = { enabled = false },
+                autopep8 = { enabled = false },
+
+                -- linter options
+                -- pylint = { enabled = true, executable = "pylint" },
+                -- pyflakes = { enabled = true },
+                pycodestyle = { enabled = false },
+
+                -- type checker
+                -- pylsp_mypy = { enabled = true },
+
+                -- auto-completion options
+                -- jedi_completion = { fuzzy = true },
+
+                -- import sorting
+                -- pyls_isort = { enabled = true },
+              },
+            },
+          },
+        },
         gopls = {},
         ts_ls = {},
         lua_ls = {
@@ -544,4 +570,12 @@ require('lazy').setup {
   { 'tpope/vim-dadbod' },
   { 'kristijanhusak/vim-dadbod-completion' },
   { 'kristijanhusak/vim-dadbod-ui' },
+  -- {
+  --   'zbirenbaum/copilot.lua',
+  --   cmd = "Copilot",
+  --   event = "InsertEnter",
+  --   config = function()
+  --     require("copilot").setup({})
+  --   end,
+  -- }
 }
