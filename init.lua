@@ -223,9 +223,9 @@ require('lazy').setup {
   { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     dependencies = {
-      { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
-      { 'j-hui/fidget.nvim',       opts = {} },
-      'williamboman/mason-lspconfig.nvim',
+      { 'mason-org/mason.nvim', opts = {} },
+      { 'j-hui/fidget.nvim',    opts = {} },
+      'mason-org/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       'hrsh7th/cmp-nvim-lsp',
     },
@@ -309,38 +309,12 @@ require('lazy').setup {
       }
 
       local servers = {
-        -- rust_analyzer = {},
-        -- clangd = {},
         ['html-lsp'] = {},
         ['htmx-lsp'] = {},
         intelephense = {},
+        pylsp = {},
         -- pyright = {},
-        pylsp = {
-          settings = {
-            pylsp = {
-              plugins = {
-                -- formatter options
-                yapf = { enabled = false },
-                black = { enabled = false },
-                autopep8 = { enabled = false },
-
-                -- linter options
-                -- pylint = { enabled = true, executable = "pylint" },
-                -- pyflakes = { enabled = true },
-                pycodestyle = { enabled = false },
-
-                -- type checker
-                -- pylsp_mypy = { enabled = true },
-
-                -- auto-completion options
-                -- jedi_completion = { fuzzy = true },
-
-                -- import sorting
-                -- pyls_isort = { enabled = true },
-              },
-            },
-          },
-        },
+        clangd = {},
         gopls = {},
         ts_ls = {},
         lua_ls = {
@@ -356,7 +330,6 @@ require('lazy').setup {
         },
       }
 
-      require('mason').setup()
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
       local ensure_installed = vim.tbl_keys(servers or {})
