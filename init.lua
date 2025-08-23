@@ -310,11 +310,11 @@ require('lazy').setup {
       }
 
       local servers = {
+        -- pyright = {},
         ['html-lsp'] = {},
         ['htmx-lsp'] = {},
         intelephense = {},
         pylsp = {},
-        -- pyright = {},
         clangd = {},
         gopls = {},
         ts_ls = {},
@@ -324,7 +324,6 @@ require('lazy').setup {
               completion = {
                 callSnippet = 'Replace',
               },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
               diagnostics = { disable = { 'missing-fields' } },
             },
           },
@@ -344,8 +343,9 @@ require('lazy').setup {
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
-        },
+        }
       }
+      -- require('lspconfig').gopls.setup { cmd = { "gopls" }, }
     end,
   },
 
