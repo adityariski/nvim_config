@@ -1,3 +1,4 @@
+vim.opt.termguicolors = true
 vim.api.nvim_create_autocmd('ColorScheme', {
   callback = function()
     local highlights = {
