@@ -336,19 +336,21 @@ require('lazy').setup {
       vim.list_extend(ensure_installed, { 'stylua' })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
       -- NVIM CMP
-      -- local capabilities = vim.lsp.protocol.make_client_capabilities()
-      -- capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
-
-      -- BLINK CMP
-      local capabilities = require('blink.cmp').get_lsp_capabilities()
+      --capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
       -- require('lspconfig').gopls.setup { cmd = { "gopls" }, }
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+            -- NVIM CMP
+            -- server.capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+
+            -- BLINK CMP
+            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities,
+              require('blink.cmp').get_lsp_capabilities(server.capabilities))
             require('lspconfig')[server_name].setup(server)
           end,
         }
