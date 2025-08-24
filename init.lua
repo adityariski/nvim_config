@@ -1,4 +1,3 @@
-vim.opt.termguicolors = true
 vim.api.nvim_create_autocmd('ColorScheme', {
   callback = function()
     local highlights = {
@@ -20,7 +19,8 @@ vim.api.nvim_create_autocmd('ColorScheme', {
     vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
   end,
 })
-vim.cmd.colorscheme 'main'
+vim.cmd.colorscheme('main')
+vim.opt.termguicolors = true
 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -64,8 +64,6 @@ vim.keymap.set({ 'n', 'i' }, '<C-\\>', '<cmd>Rest run<CR>')
 vim.keymap.set({ 'n', 'i' }, '<C-c>', '<Esc><cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
@@ -97,7 +95,7 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup {
   'tpope/vim-sleuth',
-  { 'numToStr/Comment.nvim',               opts = {}, },
+  'numToStr/Comment.nvim',
   {
     'lewis6991/gitsigns.nvim',
     opts = {
@@ -228,26 +226,30 @@ require('lazy').setup {
       { 'j-hui/fidget.nvim',    opts = {} },
       'mason-org/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
-      'hrsh7th/cmp-nvim-lsp',
+
+      -- BLINK CMP
+      'saghen/blink.cmp',
+
+      -- NVIM CMP
+      -- 'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
-          local map = function(keys, func, desc)
-            vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+          local map = function(keys, func, desc, mode)
+            mode = mode or 'n'
+            vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
-
-          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-          map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-          map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-          map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-          map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-          map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-          map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-          map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-          map('K', vim.lsp.buf.hover, 'Hover Documentation')
-          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
+          map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
+          map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+          map('gri', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+          map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+          map('gO', require('telescope.builtin').lsp_document_symbols, 'Open Document Symbols')
+          map('gW', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Open Workspace Symbols')
+          map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
 
           local function client_supports_method(client, method, bufnr)
             if vim.fn.has 'nvim-0.11' == 1 then
@@ -330,31 +332,40 @@ require('lazy').setup {
         },
       }
 
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, { 'stylua' })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+
+      -- NVIM CMP
+      -- local capabilities = vim.lsp.protocol.make_client_capabilities()
+      -- capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+
+      -- BLINK CMP
+      local capabilities = require('blink.cmp').get_lsp_capabilities()
+
+      -- require('lspconfig').gopls.setup { cmd = { "gopls" }, }
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
-            -- server.capabilities = require('blink.cmp').get_lsp_capabilities(server.capabilities)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
         }
       }
-      -- require('lspconfig').gopls.setup { cmd = { "gopls" }, }
     end,
   },
 
-  { -- Autocompletion or use blink.cmp plugin
-    'hrsh7th/nvim-cmp',
+  { -- BLINK CMP
+    'saghen/blink.cmp',
     event = 'InsertEnter',
+    version = '*',
     dependencies = {
       {
+        'rafamadriz/friendly-snippets',
+        'folke/lazydev.nvim',
         'L3MON4D3/LuaSnip',
+        version = '*',
         build = (function()
           if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
             return
@@ -362,57 +373,103 @@ require('lazy').setup {
           return 'make install_jsregexp'
         end)(),
         dependencies = {},
+        opts = {},
       },
-      'saadparwaiz1/cmp_luasnip',
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-path',
-      'hrsh7th/cmp-nvim-lsp-signature-help',
     },
-    config = function()
-      local cmp = require 'cmp'
-      local luasnip = require 'luasnip'
-      luasnip.config.setup {}
-      cmp.setup {
-        snippet = {
-          expand = function(args)
-            luasnip.lsp_expand(args.body)
-          end,
+    opts = {
+      keymap = {
+        preset = 'default',
+      },
+      appearance = {
+        use_nvim_cmp_as_default = false,
+        nerd_font_variant = "mono",
+      },
+      cmdline = {
+        enabled = false,
+      },
+      completion = {
+        documentation = { auto_show = false, auto_show_delay_ms = 500 },
+        menu = {
+          draw = {
+            treesitter = { "lsp" },
+            columns = {
+              { "label", "label_description", gap = 1 },
+              { "kind" },
+            },
+          }
         },
-        completion = { completeopt = 'menu,menuone,noinsert' },
-        mapping = cmp.mapping.preset.insert {
-          ['<C-n>'] = cmp.mapping.select_next_item(),
-          ['<C-p>'] = cmp.mapping.select_prev_item(),
-          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<C-y>'] = cmp.mapping.confirm { select = true },
-          ['<C-Space>'] = cmp.mapping.complete {},
-          ['<C-l>'] = cmp.mapping(function()
-            if luasnip.expand_or_locally_jumpable() then
-              luasnip.expand_or_jump()
-            end
-          end, { 'i', 's' }),
-          ['<C-h>'] = cmp.mapping(function()
-            if luasnip.locally_jumpable(-1) then
-              luasnip.jump(-1)
-            end
-          end, { 'i', 's' }),
+      },
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'lazydev', 'buffer' },
+        providers = {
+          lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
         },
-        sources = {
-          {
-            name = 'lazydev',
-            group_index = 0,
-          },
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
-          { name = 'path' },
-          { name = 'nvim_lsp_signature_help' },
-
-          { name = 'vim-dadbod-completion' },
-          { name = 'buffer' },
-        },
-      }
-    end,
+      },
+      snippets = { preset = 'luasnip' },
+      fuzzy = { implementation = 'lua' },
+      signature = { enabled = true },
+    },
   },
+
+  -- { -- NVIM COMPLLETION
+  --   'hrsh7th/nvim-cmp',
+  --   event = 'InsertEnter',
+  --   dependencies = {
+  --     {
+  --       'L3MON4D3/LuaSnip',
+  --       build = (function()
+  --         if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
+  --           return
+  --         end
+  --         return 'make install_jsregexp'
+  --       end)(),
+  --     },
+  --     'saadparwaiz1/cmp_luasnip',
+  --     'hrsh7th/cmp-nvim-lsp',
+  --     'hrsh7th/cmp-path',
+  --     'hrsh7th/cmp-nvim-lsp-signature-help',
+  --   },
+  --   config = function()
+  --     local cmp = require 'cmp'
+  --     local luasnip = require 'luasnip'
+  --     luasnip.config.setup {}
+  --     cmp.setup {
+  --       snippet = {
+  --         expand = function(args)
+  --           luasnip.lsp_expand(args.body)
+  --         end,
+  --       },
+  --       completion = { completeopt = 'menu,menuone,noinsert' },
+  --       mapping = cmp.mapping.preset.insert {
+  --         ['<C-n>'] = cmp.mapping.select_next_item(),
+  --         ['<C-p>'] = cmp.mapping.select_prev_item(),
+  --         ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+  --         ['<C-f>'] = cmp.mapping.scroll_docs(4),
+  --         ['<C-y>'] = cmp.mapping.confirm { select = true },
+  --         ['<C-Space>'] = cmp.mapping.complete {},
+  --         ['<C-l>'] = cmp.mapping(function()
+  --           if luasnip.expand_or_locally_jumpable() then
+  --             luasnip.expand_or_jump()
+  --           end
+  --         end, { 'i', 's' }),
+  --         ['<C-h>'] = cmp.mapping(function()
+  --           if luasnip.locally_jumpable(-1) then
+  --             luasnip.jump(-1)
+  --           end
+  --         end, { 'i', 's' }),
+  --       },
+  --       sources = {
+  --         { name = 'lazydev',                group_index = 0, },
+  --         { name = 'nvim_lsp' },
+  --         { name = 'luasnip' },
+  --         { name = 'path' },
+  --         { name = 'nvim_lsp_signature_help' },
+  --         { name = 'vim-dadbod-completion' },
+  --         { name = 'buffer' },
+  --       },
+  --     }
+  --   end,
+  -- },
 
   { -- contain neodev
     'folke/lazydev.nvim',
