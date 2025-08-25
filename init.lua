@@ -15,8 +15,8 @@ vim.api.nvim_create_autocmd('ColorScheme', {
     for _, name in pairs(highlights) do
       vim.cmd.highlight(name .. ' guibg=none ctermbg=none')
     end
-    vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+    vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+    vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
   end,
 })
 vim.cmd.colorscheme('main')
@@ -384,7 +384,7 @@ require('lazy').setup {
       },
       appearance = {
         use_nvim_cmp_as_default = true,
-        nerd_font_variant = "mono",
+        nerd_font_variant = 'mono',
       },
       cmdline = {
         enabled = false,
@@ -393,10 +393,10 @@ require('lazy').setup {
         documentation = { auto_show = false, auto_show_delay_ms = 500 },
         menu = {
           draw = {
-            treesitter = { "lsp" },
+            treesitter = { 'lsp' },
             columns = {
-              { "label", "label_description", gap = 1 },
-              { "kind" },
+              { 'label', 'label_description', gap = 1 },
+              { 'kind' },
             },
           }
         },
@@ -620,10 +620,10 @@ require('lazy').setup {
   -- { 'Exafunction/codeium.vim', }
   -- {
   --   'zbirenbaum/copilot.lua',
-  --   cmd = "Copilot",
-  --   event = "InsertEnter",
+  --   cmd = 'Copilot',
+  --   event = 'InsertEnter',
   --   config = function()
-  --     require("copilot").setup({})
+  --     require('copilot').setup({})
   --   end,
   -- }
 }
