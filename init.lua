@@ -311,7 +311,6 @@ require('lazy').setup {
       }
 
       local servers = {
-        -- pyright = {},
         ['html-lsp'] = {},
         ['htmx-lsp'] = {},
         intelephense = {},
@@ -349,11 +348,6 @@ require('lazy').setup {
           end,
         }
       }
-      -- local gopls
-      -- require('lspconfig').gopls.setup {
-      --   cmd = { "gopls" },
-      --   capabilities = vim.tbl_deep_extend('force', {}, capabilities)
-      -- }
     end,
   },
 
@@ -365,12 +359,13 @@ require('lazy').setup {
       {
         'L3MON4D3/LuaSnip',
         version = '*',
-        build = (function()
-          if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
-            return
-          end
-          return 'make install_jsregexp'
-        end)(),
+        build = 'true',
+        -- build = (function()
+        --   if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
+        --     return
+        --   end
+        --   return 'make install_jsregexp'
+        -- end)(),
         dependencies = {
           {
             'rafamadriz/friendly-snippets',
