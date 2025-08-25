@@ -164,7 +164,6 @@ require('lazy').setup {
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
-    branch = '*',
     dependencies = {
       'nvim-lua/plenary.nvim',
       {
@@ -338,23 +337,23 @@ require('lazy').setup {
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       -- NVIM CMP
-      --capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
-
-      -- require('lspconfig').gopls.setup { cmd = { "gopls" }, }
+      -- capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+      -- BLINK CMP
+      capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
-            -- NVIM CMP
-            -- server.capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
-
-            -- BLINK CMP
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities,
-              require('blink.cmp').get_lsp_capabilities(server.capabilities))
+            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities)
             require('lspconfig')[server_name].setup(server)
           end,
         }
       }
+      -- local gopls
+      -- require('lspconfig').gopls.setup {
+      --   cmd = { "gopls" },
+      --   capabilities = vim.tbl_deep_extend('force', {}, capabilities)
+      -- }
     end,
   },
 
@@ -364,8 +363,6 @@ require('lazy').setup {
     version = '*',
     dependencies = {
       {
-        'rafamadriz/friendly-snippets',
-        'folke/lazydev.nvim',
         'L3MON4D3/LuaSnip',
         version = '*',
         build = (function()
@@ -374,9 +371,17 @@ require('lazy').setup {
           end
           return 'make install_jsregexp'
         end)(),
-        dependencies = {},
+        dependencies = {
+          {
+            'rafamadriz/friendly-snippets',
+            config = function()
+              require('luasnip.loaders.from_vscode').lazy_load()
+            end,
+          },
+        },
         opts = {},
       },
+      'folke/lazydev.nvim',
     },
     opts = {
       keymap = {
@@ -425,6 +430,15 @@ require('lazy').setup {
   --         end
   --         return 'make install_jsregexp'
   --       end)(),
+  --       dependencies = {
+  --         {
+  --           'rafamadriz/friendly-snippets',
+  --           config = function()
+  --             require('luasnip.loaders.from_vscode').lazy_load()
+  --           end,
+  --         },
+  --       },
+  --       opts = {},
   --     },
   --     'saadparwaiz1/cmp_luasnip',
   --     'hrsh7th/cmp-nvim-lsp',
@@ -485,7 +499,6 @@ require('lazy').setup {
 
   { -- Autoformat
     'stevearc/conform.nvim',
-    opts = {},
     keys = {
       {
         '<leader>f',
@@ -494,6 +507,10 @@ require('lazy').setup {
         end,
         mode = '',
         desc = '[F]ormat buffer',
+      },
+      opts = {
+        notify_on_error = false,
+        formatters_by_ft = { lua = { 'stylua' } },
       },
     },
   },
@@ -603,6 +620,9 @@ require('lazy').setup {
   { 'tpope/vim-dadbod' },
   { 'kristijanhusak/vim-dadbod-completion' },
   { 'kristijanhusak/vim-dadbod-ui' },
+
+  -- AI
+  -- { 'Exafunction/codeium.vim', }
   -- {
   --   'zbirenbaum/copilot.lua',
   --   cmd = "Copilot",
