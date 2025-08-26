@@ -314,7 +314,8 @@ require('lazy').setup {
         ['html-lsp'] = {},
         ['htmx-lsp'] = {},
         intelephense = {},
-        pylsp = {},
+        -- pylsp = {},
+        pyright = {},
         clangd = {},
         gopls = {},
         ts_ls = {},
@@ -331,7 +332,7 @@ require('lazy').setup {
       }
 
       local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, { 'stylua' })
+      vim.list_extend(ensure_installed, { 'stylua', 'black', 'isort' })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -506,9 +507,12 @@ require('lazy').setup {
         mode = '',
         desc = '[F]ormat buffer',
       },
-      opts = {
-        notify_on_error = false,
-        formatters_by_ft = { lua = { 'stylua' } },
+    },
+    opts = {
+      notify_on_error = false,
+      formatters_by_ft = {
+        lua = { 'stylua' },
+        python = { 'isort', 'black' },
       },
     },
   },
