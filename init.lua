@@ -314,7 +314,7 @@ require('lazy').setup {
         ['html-lsp'] = {},
         ['htmx-lsp'] = {},
         intelephense = {},
-        pylsp = {},
+        -- pylsp = {},
         clangd = {},
         gopls = {},
         ts_ls = {},
@@ -354,7 +354,7 @@ require('lazy').setup {
   { -- BLINK CMP
     'saghen/blink.cmp',
     event = 'InsertEnter',
-    version = '*',
+    version = '1.*',
     dependencies = {
       {
         'L3MON4D3/LuaSnip',
@@ -386,9 +386,6 @@ require('lazy').setup {
         use_nvim_cmp_as_default = true,
         nerd_font_variant = 'mono',
       },
-      cmdline = {
-        enabled = false,
-      },
       completion = {
         documentation = { auto_show = false, auto_show_delay_ms = 500 },
         menu = {
@@ -402,15 +399,21 @@ require('lazy').setup {
         },
       },
       sources = {
+        cmdline = {},
         default = { 'lsp', 'path', 'snippets', 'lazydev', 'buffer' },
         providers = {
-          lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
+          lazydev = {
+            name = "lazydev",
+            module = 'lazydev.integrations.blink',
+            score_offset = 100
+          },
         },
       },
       snippets = { preset = 'luasnip' },
-      fuzzy = { implementation = 'lua' },
+      -- fuzzy = { implementation = 'lua' },
       signature = { enabled = true },
     },
+    opts_extend = { "sources.default" },
   },
 
   -- { -- NVIM COMPLLETION
