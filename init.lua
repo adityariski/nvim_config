@@ -354,7 +354,7 @@ require('lazy').setup {
   { -- BLINK CMP
     'saghen/blink.cmp',
     event = 'InsertEnter',
-    version = '1.*',
+    version = '*',
     dependencies = {
       {
         'L3MON4D3/LuaSnip',
