@@ -314,7 +314,7 @@ require('lazy').setup {
         ['html-lsp'] = {},
         ['htmx-lsp'] = {},
         intelephense = {},
-        -- pylsp = {},
+        pylsp = {},
         clangd = {},
         gopls = {},
         ts_ls = {},
