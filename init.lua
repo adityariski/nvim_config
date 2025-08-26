@@ -398,8 +398,8 @@ require('lazy').setup {
           }
         },
       },
+      cmdline = {},
       sources = {
-        cmdline = {},
         default = { 'lsp', 'path', 'snippets', 'lazydev', 'buffer' },
         providers = {
           lazydev = {
