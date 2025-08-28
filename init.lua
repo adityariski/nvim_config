@@ -17,10 +17,13 @@ vim.api.nvim_create_autocmd('ColorScheme', {
     end
     vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
     vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+    vim.api.nvim_set_hl(0, 'Pmenu', { bg = 'none' })
+    vim.api.nvim_set_hl(0, 'PmenuSel', { bg = 'none' })
   end,
 })
-vim.cmd.colorscheme('main')
+vim.cmd.colorscheme 'main'
 vim.opt.termguicolors = true
+vim.opt.winborder = 'rounded'
 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -36,7 +39,9 @@ vim.opt.mouse = 'a'
 vim.opt.relativenumber = true
 
 vim.opt.showmode = false
-vim.schedule(function() vim.opt.clipboard = 'unnamedplus' end)
+vim.schedule(function()
+  vim.opt.clipboard = 'unnamedplus'
+end)
 vim.opt.breakindent = true
 vim.opt.undofile = true
 vim.opt.ignorecase = true
@@ -150,7 +155,7 @@ require('lazy').setup {
 
       -- Document existing key chains
       spec = {
-        { '<leader>c', group = '[C]ode',     mode = { 'n', 'x' } },
+        { '<leader>c', group = '[C]ode', mode = { 'n', 'x' } },
         { '<leader>d', group = '[D]ocument' },
         { '<leader>r', group = '[R]ename' },
         { '<leader>s', group = '[S]earch' },
@@ -222,7 +227,7 @@ require('lazy').setup {
     'neovim/nvim-lspconfig',
     dependencies = {
       { 'mason-org/mason.nvim', opts = {} },
-      { 'j-hui/fidget.nvim',    opts = {} },
+      { 'j-hui/fidget.nvim', opts = {} },
       'mason-org/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
@@ -347,7 +352,7 @@ require('lazy').setup {
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities)
             require('lspconfig')[server_name].setup(server)
           end,
-        }
+        },
       }
     end,
   },
@@ -396,7 +401,7 @@ require('lazy').setup {
               { 'label', 'label_description', gap = 1 },
               { 'kind' },
             },
-          }
+          },
         },
       },
       cmdline = {},
@@ -404,9 +409,9 @@ require('lazy').setup {
         default = { 'lsp', 'path', 'snippets', 'lazydev', 'buffer' },
         providers = {
           lazydev = {
-            name = "lazydev",
+            name = 'lazydev',
             module = 'lazydev.integrations.blink',
-            score_offset = 100
+            score_offset = 100,
           },
         },
       },
@@ -414,7 +419,7 @@ require('lazy').setup {
       -- fuzzy = { implementation = 'lua' },
       signature = { enabled = true },
     },
-    opts_extend = { "sources.default" },
+    opts_extend = { 'sources.default' },
   },
 
   -- { -- NVIM COMPLLETION
@@ -552,7 +557,7 @@ require('lazy').setup {
         'markdown',
         'vim',
         'vimdoc',
-        'http'
+        'http',
       },
       auto_install = true,
       highlight = {
@@ -591,7 +596,9 @@ require('lazy').setup {
       'j-hui/fidget.nvim',
     },
     opts = {},
-    config = function() require('oil').setup() end,
+    config = function()
+      require('oil').setup()
+    end,
   },
 
   {
@@ -605,17 +612,39 @@ require('lazy').setup {
         harpoon:list():remove()
         harpoon:list():add()
       end)
-      vim.keymap.set('n', '<C-e>', function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
-      vim.keymap.set('n', '<A-1>', function() harpoon:list():select(1) end)
-      vim.keymap.set('n', '<A-2>', function() harpoon:list():select(2) end)
-      vim.keymap.set('n', '<A-3>', function() harpoon:list():select(3) end)
-      vim.keymap.set('n', '<A-4>', function() harpoon:list():select(4) end)
-      vim.keymap.set('n', '<A-5>', function() harpoon:list():select(5) end)
-      vim.keymap.set('n', '<A-6>', function() harpoon:list():select(6) end)
-      vim.keymap.set('n', '<A-7>', function() harpoon:list():select(7) end)
-      vim.keymap.set('n', '<A-8>', function() harpoon:list():select(8) end)
-      vim.keymap.set('n', '<A-9>', function() harpoon:list():select(9) end)
-      vim.keymap.set('n', '<A-0>', function() harpoon:list():select(0) end)
+      vim.keymap.set('n', '<C-e>', function()
+        harpoon.ui:toggle_quick_menu(harpoon:list())
+      end)
+      vim.keymap.set('n', '<A-1>', function()
+        harpoon:list():select(1)
+      end)
+      vim.keymap.set('n', '<A-2>', function()
+        harpoon:list():select(2)
+      end)
+      vim.keymap.set('n', '<A-3>', function()
+        harpoon:list():select(3)
+      end)
+      vim.keymap.set('n', '<A-4>', function()
+        harpoon:list():select(4)
+      end)
+      vim.keymap.set('n', '<A-5>', function()
+        harpoon:list():select(5)
+      end)
+      vim.keymap.set('n', '<A-6>', function()
+        harpoon:list():select(6)
+      end)
+      vim.keymap.set('n', '<A-7>', function()
+        harpoon:list():select(7)
+      end)
+      vim.keymap.set('n', '<A-8>', function()
+        harpoon:list():select(8)
+      end)
+      vim.keymap.set('n', '<A-9>', function()
+        harpoon:list():select(9)
+      end)
+      vim.keymap.set('n', '<A-0>', function()
+        harpoon:list():select(0)
+      end)
     end,
   },
 
