@@ -15,14 +15,12 @@ vim.api.nvim_create_autocmd('ColorScheme', {
     for _, name in pairs(highlights) do
       vim.cmd.highlight(name .. ' guibg=none ctermbg=none')
     end
-    vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
-    vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
-    vim.api.nvim_set_hl(0, 'Pmenu', { bg = 'none' })
   end,
 })
+
 vim.cmd.colorscheme 'main'
 vim.opt.termguicolors = true
-vim.opt.winborder = 'rounded'
+vim.opt.winborder = 'single'
 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -663,6 +661,6 @@ require('lazy').setup({
   -- }
 }, {
   ui = {
-    border = 'rounded',
+    border = 'single',
   },
 })
