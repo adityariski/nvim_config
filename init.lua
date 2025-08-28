@@ -18,7 +18,6 @@ vim.api.nvim_create_autocmd('ColorScheme', {
     vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
     vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
     vim.api.nvim_set_hl(0, 'Pmenu', { bg = 'none' })
-    vim.api.nvim_set_hl(0, 'PmenuSel', { bg = 'none' })
   end,
 })
 vim.cmd.colorscheme 'main'
@@ -38,10 +37,10 @@ vim.opt.number = true
 vim.opt.mouse = 'a'
 vim.opt.relativenumber = true
 
-vim.opt.showmode = false
 vim.schedule(function()
   vim.opt.clipboard = 'unnamedplus'
 end)
+vim.opt.showmode = false
 vim.opt.breakindent = true
 vim.opt.undofile = true
 vim.opt.ignorecase = true
@@ -98,7 +97,7 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 -- NOTE: Here is where you install your plugins.
-require('lazy').setup {
+require('lazy').setup({
   'tpope/vim-sleuth',
   'numToStr/Comment.nvim',
   {
@@ -662,4 +661,8 @@ require('lazy').setup {
   --     require('copilot').setup({})
   --   end,
   -- }
-}
+}, {
+  ui = {
+    border = 'rounded',
+  },
+})
