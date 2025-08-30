@@ -568,14 +568,15 @@ require('lazy').setup({
     },
   },
 
-  {
-    'vhyrro/luarocks.nvim',
-    config = function() end,
-    opts = {
-      -- Specify LuaRocks packages to install
-      rocks = { 'lua-curl', 'nvim-nio', 'mimetypes', 'xml2lua' },
-    },
-  },
+  -- DISABLE TO USE SYSTEM LUAROCKS
+  -- {
+  --   'vhyrro/luarocks.nvim',
+  --   config = function() end,
+  --   opts = {
+  --     -- Specify LuaRocks packages to install
+  --     rocks = { 'lua-curl', 'nvim-nio', 'mimetypes', 'xml2lua' },
+  --   },
+  -- },
 
   {
     'stevearc/oil.nvim',
