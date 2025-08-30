@@ -62,7 +62,7 @@ vim.keymap.set({ 'v', 'n' }, '<leader>f', function()
   require('conform').format { async = true, lsp_format = 'fallback' }
 end, { desc = 'Auto Format' })
 
--- vim.keymap.set({ 'n', 'i' }, '<C-\\>', '<cmd>Rest run<CR>')
+vim.keymap.set({ 'n', 'i' }, '<C-\\>', '<cmd>Rest run<CR>')
 vim.keymap.set({ 'n', 'i' }, '<C-c>', '<Esc><cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
@@ -561,12 +561,12 @@ require('lazy').setup({
     end,
   },
 
-  -- {
-  --   'rest-nvim/rest.nvim',
-  --   dependencies = {
-  --     'j-hui/fidget.nvim',
-  --   },
-  -- },
+  {
+    'rest-nvim/rest.nvim',
+    dependencies = {
+      'j-hui/fidget.nvim',
+    },
+  },
 
   {
     'vhyrro/luarocks.nvim',
