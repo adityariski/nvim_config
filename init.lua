@@ -62,7 +62,7 @@ vim.keymap.set({ 'v', 'n' }, '<leader>f', function()
   require('conform').format { async = true, lsp_format = 'fallback' }
 end, { desc = 'Auto Format' })
 
-vim.keymap.set({ 'n', 'i' }, '<C-\\>', '<cmd>Rest run<CR>')
+-- vim.keymap.set({ 'n', 'i' }, '<C-\\>', '<cmd>Rest run<CR>')
 vim.keymap.set({ 'n', 'i' }, '<C-c>', '<Esc><cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
@@ -314,27 +314,14 @@ require('lazy').setup({
 
       local servers = {
         ['html-lsp'] = {},
-        ['htmx-lsp'] = {},
         intelephense = {},
-        -- pylsp = {},
         pyright = {},
-        clangd = {},
         gopls = {},
         ts_ls = {},
-        lua_ls = {
-          settings = {
-            Lua = {
-              completion = {
-                callSnippet = 'Replace',
-              },
-              -- diagnostics = { disable = { 'missing-fields' } },
-            },
-          },
-        },
       }
 
       local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, { 'stylua', 'black', 'isort' })
+      vim.list_extend(ensure_installed, { 'black', 'isort' })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -351,6 +338,15 @@ require('lazy').setup({
           end,
         },
       }
+      require('lspconfig').lua_ls.setup {
+        settings = {
+          Lua = {
+            completion = {
+              callSnippet = 'Replace',
+            },
+          },
+        },
+      }
     end,
   },
 
@@ -363,12 +359,6 @@ require('lazy').setup({
         'L3MON4D3/LuaSnip',
         version = '*',
         build = 'true',
-        -- build = (function()
-        --   if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
-        --     return
-        --   end
-        --   return 'make install_jsregexp'
-        -- end)(),
         dependencies = {
           {
             'rafamadriz/friendly-snippets',
@@ -571,12 +561,12 @@ require('lazy').setup({
     end,
   },
 
-  {
-    'rest-nvim/rest.nvim',
-    dependencies = {
-      'j-hui/fidget.nvim',
-    },
-  },
+  -- {
+  --   'rest-nvim/rest.nvim',
+  --   dependencies = {
+  --     'j-hui/fidget.nvim',
+  --   },
+  -- },
 
   {
     'vhyrro/luarocks.nvim',
