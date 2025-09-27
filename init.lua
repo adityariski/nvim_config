@@ -86,46 +86,46 @@ require('lazy').setup({
       require('fidget').setup {
         notification = {
           -- WARN: set to `false` when using noice.nvim plugin
-          override_vim_notify = false,
+          override_vim_notify = true,
           configs = { default = custom_config },
           window = { winblend = 0 },
         },
       }
     end,
   },
-  {
-    'folke/noice.nvim',
-    dependencies = {
-      'rcarriga/nvim-notify',
-      'MunifTanjim/nui.nvim',
-    },
-    config = function()
-      local notify = require 'notify'
-      notify.setup { stages = 'static', merge_duplicates = true }
-
-      require('noice').setup {
-        popupmenu = { kind_icons = false },
-        cmdline = {
-          -- view = 'cmdline',
-          format = {
-            lua = false,
-            help = false,
-            input = false,
-            filter = false,
-            cmdline = false,
-            search_up = false,
-            search_down = false,
-          },
-        },
-        lsp = {
-          hover = { enabled = false },
-          progress = { enabled = false },
-          signature = { enabled = false },
-          message = { enabled = true, view = 'notify', opts = {} },
-        },
-      }
-    end,
-  },
+  -- {
+  --   'folke/noice.nvim',
+  --   dependencies = {
+  --     'rcarriga/nvim-notify',
+  --     'MunifTanjim/nui.nvim',
+  --   },
+  --   config = function()
+  --     local notify = require 'notify'
+  --     notify.setup { stages = 'static', merge_duplicates = true }
+  --
+  --     require('noice').setup {
+  --       popupmenu = { kind_icons = false },
+  --       cmdline = {
+  --         -- view = 'cmdline',
+  --         format = {
+  --           lua = false,
+  --           help = false,
+  --           input = false,
+  --           filter = false,
+  --           cmdline = false,
+  --           search_up = false,
+  --           search_down = false,
+  --         },
+  --       },
+  --       lsp = {
+  --         hover = { enabled = false },
+  --         progress = { enabled = false },
+  --         signature = { enabled = false },
+  --         message = { enabled = true, view = 'notify', opts = {} },
+  --       },
+  --     }
+  --   end,
+  -- },
   {
     'folke/which-key.nvim',
     event = 'VimEnter',
