@@ -85,47 +85,13 @@ require('lazy').setup({
       custom_config.icon = nil
       require('fidget').setup {
         notification = {
-          -- WARN: set to `false` when using noice.nvim plugin
-          override_vim_notify = true,
           configs = { default = custom_config },
           window = { winblend = 0 },
+          override_vim_notify = true,
         },
       }
     end,
   },
-  -- {
-  --   'folke/noice.nvim',
-  --   dependencies = {
-  --     'rcarriga/nvim-notify',
-  --     'MunifTanjim/nui.nvim',
-  --   },
-  --   config = function()
-  --     local notify = require 'notify'
-  --     notify.setup { stages = 'static', merge_duplicates = true }
-  --
-  --     require('noice').setup {
-  --       popupmenu = { kind_icons = false },
-  --       cmdline = {
-  --         -- view = 'cmdline',
-  --         format = {
-  --           lua = false,
-  --           help = false,
-  --           input = false,
-  --           filter = false,
-  --           cmdline = false,
-  --           search_up = false,
-  --           search_down = false,
-  --         },
-  --       },
-  --       lsp = {
-  --         hover = { enabled = false },
-  --         progress = { enabled = false },
-  --         signature = { enabled = false },
-  --         message = { enabled = true, view = 'notify', opts = {} },
-  --       },
-  --     }
-  --   end,
-  -- },
   {
     'folke/which-key.nvim',
     event = 'VimEnter',
@@ -162,13 +128,7 @@ require('lazy').setup({
     event = 'VimEnter',
     dependencies = {
       { 'nvim-lua/plenary.nvim' },
-      {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        build = 'make',
-        cond = function()
-          return vim.fn.executable 'make' == 1
-        end,
-      },
+      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
       { 'nvim-telescope/telescope-ui-select.nvim' },
     },
     config = function()
@@ -210,8 +170,7 @@ require('lazy').setup({
   {
     'neovim/nvim-lspconfig',
     dependencies = {
-      -- { 'hrsh7th/nvim-cmp', opts = {} },
-      -- { 'saghen/blink.cmp', opts = {} },
+      { 'saghen/blink.cmp' },
       { 'mason-org/mason.nvim', opts = {} },
       { 'mason-org/mason-lspconfig.nvim', opts = {} },
       { 'WhoIsSethDaniel/mason-tool-installer.nvim', opts = {} },
@@ -324,20 +283,6 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, { 'black', 'isort' })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
-      -- local capabilities = vim.lsp.protocol.make_client_capabilities()
-      -- -- capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-      -- capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
-      -- require('mason-lspconfig').setup {
-      --   handlers = {
-      --     function(server_name)
-      --       local server = servers[server_name] or {}
-      --       server.capabilities = vim.tbl_deep_extend('force', {}, capabilities)
-      --       vim.lsp.config(server_name, server)
-      --       vim.lsp.enable(server_name, true)
-      --     end,
-      --   },
-      -- }
-
       for server, config in pairs(vim.tbl_extend('keep', servers.mason, servers.others)) do
         if not vim.tbl_isempty(config) then
           vim.lsp.config(server, config)
@@ -358,20 +303,22 @@ require('lazy').setup({
       {
         'L3MON4D3/LuaSnip',
         version = '*',
-        build = 'make install_jsregexp', -- WARN: need make build tool!
+        build = 'make install_jsregexp',
+        dependencies = {
+          {
+            'rafamadriz/friendly-snippets',
+            config = function()
+              require('luasnip.loaders.from_vscode').lazy_load()
+            end,
+          },
+        },
         opts = {},
       },
-      {
-        'rafamadriz/friendly-snippets',
-        config = function()
-          require('luasnip.loaders.from_vscode').lazy_load()
-        end,
-      },
     },
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
     opts = {
-      keymap = { preset = 'default' },
       appearance = {
-        use_nvim_cmp_as_default = true,
         nerd_font_variant = 'mono',
       },
       completion = {
@@ -380,13 +327,13 @@ require('lazy').setup({
           draw = {
             treesitter = { 'lsp' },
             columns = {
-              { 'label', 'label_description', gap = 1 },
+              { 'label', 'label_description', gap = 0 },
               { 'kind' },
             },
           },
         },
       },
-      cmdline = {},
+      cmdline = { enabled = true },
       sources = {
         default = { 'lsp', 'path', 'snippets', 'lazydev', 'buffer' },
         providers = {
@@ -397,81 +344,12 @@ require('lazy').setup({
           },
         },
       },
-      snippets = { preset = 'luasnip' },
       signature = { enabled = true },
+      snippets = { preset = 'luasnip' },
       fuzzy = { implementation = 'rust' },
-      -- fuzzy = { implementation = 'lua' },
     },
     opts_extend = { 'sources.default' },
   },
-  -- {
-  --   'hrsh7th/nvim-cmp',
-  --   event = 'InsertEnter',
-  --   dependencies = {
-  --     {
-  --       'L3MON4D3/LuaSnip',
-  --       build = (function()
-  --         if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
-  --           return
-  --         end
-  --         return 'make install_jsregexp'
-  --       end)(),
-  --       dependencies = {
-  --         {
-  --           'rafamadriz/friendly-snippets',
-  --           config = function()
-  --             require('luasnip.loaders.from_vscode').lazy_load()
-  --           end,
-  --         },
-  --       },
-  --       opts = {},
-  --     },
-  --     'saadparwaiz1/cmp_luasnip',
-  --     'hrsh7th/cmp-path',
-  --     'hrsh7th/cmp-nvim-lsp',
-  --     'hrsh7th/cmp-nvim-lsp-signature-help',
-  --   },
-  --   config = function()
-  --     local cmp = require 'cmp'
-  --     local luasnip = require 'luasnip'
-  --     luasnip.config.setup {}
-  --     cmp.setup {
-  --       snippet = {
-  --         expand = function(args)
-  --           luasnip.lsp_expand(args.body)
-  --         end,
-  --       },
-  --       completion = { completeopt = 'menu,menuone,noinsert' },
-  --       mapping = cmp.mapping.preset.insert {
-  --         ['<C-n>'] = cmp.mapping.select_next_item(),
-  --         ['<C-p>'] = cmp.mapping.select_prev_item(),
-  --         ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-  --         ['<C-f>'] = cmp.mapping.scroll_docs(4),
-  --         ['<C-y>'] = cmp.mapping.confirm { select = true },
-  --         ['<C-Space>'] = cmp.mapping.complete {},
-  --         ['<C-l>'] = cmp.mapping(function()
-  --           if luasnip.expand_or_locally_jumpable() then
-  --             luasnip.expand_or_jump()
-  --           end
-  --         end, { 'i', 's' }),
-  --         ['<C-h>'] = cmp.mapping(function()
-  --           if luasnip.locally_jumpable(-1) then
-  --             luasnip.jump(-1)
-  --           end
-  --         end, { 'i', 's' }),
-  --       },
-  --       sources = {
-  --         { name = 'lazydev', group_index = 0 },
-  --         { name = 'nvim_lsp' },
-  --         { name = 'luasnip' },
-  --         { name = 'path' },
-  --         { name = 'nvim_lsp_signature_help' },
-  --         { name = 'vim-dadbod-completion' },
-  --         { name = 'buffer' },
-  --       },
-  --     }
-  --   end,
-  -- },
   {
     'stevearc/conform.nvim',
     keys = {
@@ -566,7 +444,6 @@ require('lazy').setup({
     'vhyrro/luarocks.nvim',
     config = function() end,
     opts = {
-      -- Specify LuaRocks packages to install
       rocks = { 'lua-curl', 'nvim-nio', 'mimetypes', 'xml2lua' },
     },
   },
@@ -626,7 +503,5 @@ require('lazy').setup({
     end,
   },
 }, {
-  ui = {
-    border = 'rounded',
-  },
+  ui = { border = 'rounded' },
 })

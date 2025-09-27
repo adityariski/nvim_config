@@ -9,7 +9,7 @@ let g:colors_name = "main"
 hi LineNr         guifg=#7D7D7D gui=BOLD
 hi StatusLine     guifg=white   gui=BOLD
 hi StatusLineNc   guifg=white   gui=BOLD
-hi Cursor         guifg=none    guibg=white
+hi Cursor         guifg=black   guibg=white
 hi CursorLine     guifg=NONE    guibg=#202020
 hi CursorLineSign guifg=NONE    guibg=#202020
 hi CursorLineNr   guifg=#FFFFB6 guibg=#202020
