@@ -254,7 +254,9 @@ require('lazy').setup({
       }
 
       ---@class LspServersConfig
+      ---@diagnostic disable-next-line: duplicate-doc-field
       ---@field mason table<string, vim.lsp.Config>
+      ---@diagnostic disable-next-line: duplicate-doc-field
       ---@field others table<string, vim.lsp.Config>
       local servers = {
         mason = {
