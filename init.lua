@@ -1,4 +1,5 @@
-vim.cmd.colorscheme 'main'
+dofile(vim.fn.stdpath 'config' .. '/custom_functions.lua')
+apply_theme()
 
 vim.schedule(function()
   vim.opt.clipboard = 'unnamedplus'
@@ -29,9 +30,10 @@ vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 vim.opt.inccommand = 'split'
 vim.opt.cursorline = true
-vim.opt.scrolloff = 100
+vim.opt.scrolloff = 25
 vim.opt.hlsearch = true
 vim.opt.confirm = true
+vim.opt.incsearch = false
 
 vim.keymap.set({ 'x', 'v' }, 'p', function()
   vim.cmd '"_"d'
@@ -85,9 +87,39 @@ require('lazy').setup({
       custom_config.icon = nil
       require('fidget').setup {
         notification = {
+          override_vim_notify = false,
           configs = { default = custom_config },
           window = { winblend = 0 },
-          override_vim_notify = true,
+        },
+      }
+    end,
+  },
+  {
+    'folke/noice.nvim',
+    event = 'VeryLazy',
+    dependencies = {
+      { 'MunifTanjim/nui.nvim' },
+      { 'rcarriga/nvim-notify', opts = { stages = 'static', merge_duplicates = true } },
+    },
+    config = function()
+      require('noice').setup {
+        popupmenu = { kind_icons = false },
+        cmdline = {
+          format = {
+            input = { view = 'cmdline_input', icon = '' },
+            help = { pattern = '^:%s*he?l?p?%s+', icon = '' },
+            cmdline = { pattern = '^:', icon = '', lang = 'vim' },
+            filter = { pattern = '^:%s*!', icon = '', lang = 'bash' },
+            search_up = { kind = 'search', pattern = '^%?', icon = '', lang = 'regex' },
+            search_down = { kind = 'search', pattern = '^/', icon = '', lang = 'regex' },
+            lua = { pattern = { '^:%s*lua%s+', '^:%s*lua%s*=%s*', '^:%s*=%s*' }, icon = '', lang = 'lua' },
+          },
+        },
+        lsp = {
+          hover = { enabled = false },
+          progress = { enabled = false },
+          signature = { enabled = false },
+          message = { enabled = true, view = 'notify', opts = {} },
         },
       }
     end,
@@ -306,15 +338,13 @@ require('lazy').setup({
         'L3MON4D3/LuaSnip',
         version = '*',
         build = 'make install_jsregexp',
-        dependencies = {
-          {
-            'rafamadriz/friendly-snippets',
-            config = function()
-              require('luasnip.loaders.from_vscode').lazy_load()
-            end,
-          },
-        },
         opts = {},
+      },
+      {
+        'rafamadriz/friendly-snippets',
+        config = function()
+          require('luasnip.loaders.from_vscode').lazy_load()
+        end,
       },
     },
     ---@module 'blink.cmp'

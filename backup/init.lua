@@ -90,6 +90,17 @@ require('lazy').setup({
           window = { winblend = 0 },
         },
       }
+      -- local ui_ns = vim.api.nvim_create_namespace 'custom_namespace'
+      -- local ui_opts = { ext_messages = true }
+      -- ---@diagnostic disable-next-line
+      -- vim.ui_attach(ui_ns, ui_opts, function(event, ...)
+      --   if event == 'msg_show' then
+      --     local kind, content, replace_last, history, append, msg_id = ...
+      --     for _, x in pairs(content) do
+      --       vim.notify(x)
+      --     end
+      --   end
+      -- end)
     end,
   },
   {
