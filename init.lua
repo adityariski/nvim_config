@@ -1,5 +1,4 @@
-dofile(vim.fn.stdpath 'config' .. '/custom_functions.lua')
-apply_theme()
+vim.cmd.colorscheme 'main'
 
 vim.schedule(function()
   vim.opt.clipboard = 'unnamedplus'
@@ -69,6 +68,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     error('Error cloning lazy.nvim:\n' .. out)
   end
 end
+
 ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
@@ -88,15 +88,14 @@ require('lazy').setup({
       require('fidget').setup {
         notification = {
           override_vim_notify = false,
-          configs = { default = custom_config },
           window = { winblend = 0 },
+          configs = { default = custom_config },
         },
       }
     end,
   },
   {
     'folke/noice.nvim',
-    event = 'VeryLazy',
     dependencies = {
       { 'MunifTanjim/nui.nvim' },
       { 'rcarriga/nvim-notify', opts = { stages = 'static', merge_duplicates = true } },
